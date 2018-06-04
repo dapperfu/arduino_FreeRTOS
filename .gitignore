@@ -1,0 +1,10 @@
+arduino/
+arduino_*.tar.gz
+arduino_make/
+arduino_make_*.tar.gz
+bin/
+lib/
+lib64
+pip-selfcheck.json
+pyvenv.cfg
+share/
