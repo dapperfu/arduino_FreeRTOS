@@ -7,3 +7,6 @@
 [submodule "libraries/Arduino_FreeRTOS_Library"]
 	path = libraries/Arduino_FreeRTOS_Library
 	url = git@github.com:jed-frey/Arduino_FreeRTOS_Library.git
+[submodule "libraries/SD"]
+	path = libraries/SD
+	url = https://github.com/arduino-libraries/SD.git
