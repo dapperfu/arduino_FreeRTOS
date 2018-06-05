@@ -4,3 +4,6 @@
 [submodule "Lib/Arduino_FreeRTOS_Library"]
 	path = Lib/Arduino_FreeRTOS_Library
 	url = https://github.com/feilipu/Arduino_FreeRTOS_Library.git
+[submodule "libraries/Arduino_FreeRTOS_Library"]
+	path = libraries/Arduino_FreeRTOS_Library
+	url = git@github.com:jed-frey/Arduino_FreeRTOS_Library.git
