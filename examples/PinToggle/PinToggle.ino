@@ -1,15 +1,9 @@
 #include <Arduino_FreeRTOS.h>
 #include <FreeRTOSConfig.h>
-#include <mpu_wrappers.h>
-#include <semphr.h>
-#include <task.h>
 #include <timers.h>
 
-// Declare a mutex Semaphore Handle which we will use to manage the Serial Port.
-// It will be used to ensure only only one Task is accessing this resource at
-// any time.
-SemaphoreHandle_t xSerialSemaphore;
-StaticTimer_t xTimerBuffer13;
+TickType_t __attribute__((section("DT_SIGNED_CHAR"))) one_tick = 1;
+
 
 void TaskToggle6(void *pvParameters) // This is a task.
 {
@@ -100,7 +94,7 @@ TimerHandle_t xTimer10;
 void setup() {
 
   Serial.begin(115200);
-
+/*
   if (xSerialSemaphore == NULL) // Check to confirm that the Serial Semaphore
                                 // has not already been created.
   {
@@ -132,6 +126,7 @@ void setup() {
   // Now set up two tasks to run independently.
   xTaskCreate(TaskToggle9, (const portCHAR *)"TaskToggle9", 128, NULL, 2, NULL);
 
+  */
   while (!Serial) {
   }
 }
