@@ -33,7 +33,7 @@ float filterLPF(lpf *filter, float x) {
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-   // initialize serial communication at 9600 bits per second:
+  // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
 
   while (!Serial) {
@@ -48,9 +48,8 @@ void setup() {
   if (xSerialSemaphore == NULL) // Check to confirm that the Serial Semaphore
                                 // has not already been created.
   {
-    xSerialSemaphore =
-        xSemaphoreCreateMutex(); // Create a mutex semaphore we will use to
-                                 // manage the Serial Port
+    xSerialSemaphore = xSemaphoreCreateMutex(); // Create a mutex semaphore we will use to
+                                                // manage the Serial Port
     if ((xSerialSemaphore) != NULL)
       xSemaphoreGive((xSerialSemaphore)); // Make the Serial Port available for
                                           // use, by "Giving" the Semaphore.
@@ -86,8 +85,7 @@ void loop() {
 /*---------------------- Tasks ---------------------*/
 /*--------------------------------------------------*/
 
-void TaskDigitalRead(void *pvParameters
-                     __attribute__((unused))) // This is a Task.
+void TaskDigitalRead(void *pvParameters __attribute__((unused))) // This is a Task.
 {
   /*
     DigitalReadSerial
@@ -117,25 +115,22 @@ void TaskDigitalRead(void *pvParameters
       // middle of a conversion. print out the state of the button:
       Serial.println(buttonState);
 
-      xSemaphoreGive(
-          xSerialSemaphore); // Now free or "Give" the Serial Port for others.
+      xSemaphoreGive(xSerialSemaphore); // Now free or "Give" the Serial Port for others.
     }
 
     vTaskDelay(1); // one tick delay (15ms) in between reads for stability
   }
 }
 
-void TaskAnalogRead(void *pvParameters
-                    __attribute__((unused))) // This is a Task.
+void TaskAnalogRead(void *pvParameters __attribute__((unused))) // This is a Task.
 {
 
-lpf lpf1;
+  lpf lpf1;
   initLPF(&lpf1, 0.015, 1, 0);
 
   for (;;) {
     // read the input on analog pin 0:
     int sensorValue = analogRead(A0);
-
 
     // See if we can obtain or "Take" the Serial Semaphore.
     // If the semaphore is not available, wait 5 ticks of the Scheduler to see
@@ -147,8 +142,7 @@ lpf lpf1;
       // middle of a conversion. print out the value you read:
       Serial.println(sensorValue);
 
-      xSemaphoreGive(
-          xSerialSemaphore); // Now free or "Give" the Serial Port for others.
+      xSemaphoreGive(xSerialSemaphore); // Now free or "Give" the Serial Port for others.
     }
 
     vTaskDelay(1); // one tick delay (15ms) in between reads for stability

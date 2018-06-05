@@ -80,10 +80,10 @@ void TaskBlink(void *pvParameters) // This is a task.
   for (;;) // A Task shall never return or exit.
   {
     digitalWrite(LED_BUILTIN,
-                 HIGH); // turn the LED on (HIGH is the voltage level)
+                 HIGH);                    // turn the LED on (HIGH is the voltage level)
     vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
     digitalWrite(LED_BUILTIN,
-                 LOW); // turn the LED off by making the voltage LOW
+                 LOW);                     // turn the LED off by making the voltage LOW
     vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
   }
 }
