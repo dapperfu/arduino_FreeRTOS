@@ -1,56 +1,84 @@
 #include <Arduino_FreeRTOS.h>
-#include <semphr.h>  // add the FreeRTOS functions for Semaphores (or Flags).
+#include <semphr.h> // add the FreeRTOS functions for Semaphores (or Flags).
 
 // Declare a mutex Semaphore Handle which we will use to manage the Serial Port.
-// It will be used to ensure only only one Task is accessing this resource at any time.
+// It will be used to ensure only only one Task is accessing this resource at
+// any time.
 SemaphoreHandle_t xSerialSemaphore;
 
 // define two Tasks for DigitalRead & AnalogRead
-void TaskDigitalRead( void *pvParameters );
-void TaskAnalogRead( void *pvParameters );
+void TaskDigitalRead(void *pvParameters);
+void TaskAnalogRead(void *pvParameters);
+
+typedef struct lpf {
+  float alpha;
+  float dt;
+  float tau;
+  float y1;
+} lpf;
+
+void initLPF(lpf *filter, float dt, float tau, float x0) {
+  filter->dt = dt;
+  filter->tau = tau;
+  filter->alpha = filter->dt / (filter->tau + filter->dt);
+  filter->y1 = x0 * filter->alpha;
+}
+
+float filterLPF(lpf *filter, float x) {
+  float y;
+  y = filter->alpha + (1 - filter->alpha) * filter->y1;
+  filter->y1 = y;
+  return y;
+}
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-
-  // initialize serial communication at 9600 bits per second:
+   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
-  
+
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB, on LEONARDO, MICRO, YUN, and other 32u4 based boards.
+    ; // wait for serial port to connect. Needed for native USB, on LEONARDO,
+      // MICRO, YUN, and other 32u4 based boards.
   }
 
-  // Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
-  // because it is sharing a resource, such as the Serial port.
-  // Semaphores should only be used whilst the scheduler is running, but we can set it up here.
-  if ( xSerialSemaphore == NULL )  // Check to confirm that the Serial Semaphore has not already been created.
+  // Semaphores are useful to stop a Task proceeding, where it should be paused
+  // to wait, because it is sharing a resource, such as the Serial port.
+  // Semaphores should only be used whilst the scheduler is running, but we can
+  // set it up here.
+  if (xSerialSemaphore == NULL) // Check to confirm that the Serial Semaphore
+                                // has not already been created.
   {
-    xSerialSemaphore = xSemaphoreCreateMutex();  // Create a mutex semaphore we will use to manage the Serial Port
-    if ( ( xSerialSemaphore ) != NULL )
-      xSemaphoreGive( ( xSerialSemaphore ) );  // Make the Serial Port available for use, by "Giving" the Semaphore.
+    xSerialSemaphore =
+        xSemaphoreCreateMutex(); // Create a mutex semaphore we will use to
+                                 // manage the Serial Port
+    if ((xSerialSemaphore) != NULL)
+      xSemaphoreGive((xSerialSemaphore)); // Make the Serial Port available for
+                                          // use, by "Giving" the Semaphore.
   }
 
   // Now set up two Tasks to run independently.
-  xTaskCreate(
-    TaskDigitalRead
-    ,  (const portCHAR *)"DigitalRead"  // A name just for humans
-    ,  128  // This stack size can be checked & adjusted by reading the Stack Highwater
-    ,  NULL
-    ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    ,  NULL );
+  xTaskCreate(TaskDigitalRead,
+              (const portCHAR *)"DigitalRead" // A name just for humans
+              ,
+              128 // This stack size can be checked & adjusted by reading the
+                  // Stack Highwater
+              ,
+              NULL, 2 // Priority, with 3 (configMAX_PRIORITIES - 1) being the
+                      // highest, and 0 being the lowest.
+              ,
+              NULL);
 
-  xTaskCreate(
-    TaskAnalogRead
-    ,  (const portCHAR *) "AnalogRead"
-    ,  128  // Stack size
-    ,  NULL
-    ,  1  // Priority
-    ,  NULL );
+  xTaskCreate(TaskAnalogRead, (const portCHAR *)"AnalogRead", 128 // Stack size
+              ,
+              NULL, 1 // Priority
+              ,
+              NULL);
 
-  // Now the Task scheduler, which takes over control of scheduling individual Tasks, is automatically started.
+  // Now the Task scheduler, which takes over control of scheduling individual
+  // Tasks, is automatically started.
 }
 
-void loop()
-{
+void loop() {
   // Empty. Things are done in Tasks.
 }
 
@@ -58,7 +86,8 @@ void loop()
 /*---------------------- Tasks ---------------------*/
 /*--------------------------------------------------*/
 
-void TaskDigitalRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
+void TaskDigitalRead(void *pvParameters
+                     __attribute__((unused))) // This is a Task.
 {
   /*
     DigitalReadSerial
@@ -79,43 +108,49 @@ void TaskDigitalRead( void *pvParameters __attribute__((unused)) )  // This is a
     int buttonState = digitalRead(pushButton);
 
     // See if we can obtain or "Take" the Serial Semaphore.
-    // If the semaphore is not available, wait 5 ticks of the Scheduler to see if it becomes free.
-    if ( xSemaphoreTake( xSerialSemaphore, ( TickType_t ) 5 ) == pdTRUE )
-    {
-      // We were able to obtain or "Take" the semaphore and can now access the shared resource.
-      // We want to have the Serial Port for us alone, as it takes some time to print,
-      // so we don't want it getting stolen during the middle of a conversion.
-      // print out the state of the button:
+    // If the semaphore is not available, wait 5 ticks of the Scheduler to see
+    // if it becomes free.
+    if (xSemaphoreTake(xSerialSemaphore, (TickType_t)5) == pdTRUE) {
+      // We were able to obtain or "Take" the semaphore and can now access the
+      // shared resource. We want to have the Serial Port for us alone, as it
+      // takes some time to print, so we don't want it getting stolen during the
+      // middle of a conversion. print out the state of the button:
       Serial.println(buttonState);
 
-      xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+      xSemaphoreGive(
+          xSerialSemaphore); // Now free or "Give" the Serial Port for others.
     }
 
-    vTaskDelay(1);  // one tick delay (15ms) in between reads for stability
+    vTaskDelay(1); // one tick delay (15ms) in between reads for stability
   }
 }
 
-void TaskAnalogRead( void *pvParameters __attribute__((unused)) )  // This is a Task.
+void TaskAnalogRead(void *pvParameters
+                    __attribute__((unused))) // This is a Task.
 {
 
-  for (;;)
-  {
+lpf lpf1;
+  initLPF(&lpf1, 0.015, 1, 0);
+
+  for (;;) {
     // read the input on analog pin 0:
     int sensorValue = analogRead(A0);
 
+
     // See if we can obtain or "Take" the Serial Semaphore.
-    // If the semaphore is not available, wait 5 ticks of the Scheduler to see if it becomes free.
-    if ( xSemaphoreTake( xSerialSemaphore, ( TickType_t ) 5 ) == pdTRUE )
-    {
-      // We were able to obtain or "Take" the semaphore and can now access the shared resource.
-      // We want to have the Serial Port for us alone, as it takes some time to print,
-      // so we don't want it getting stolen during the middle of a conversion.
-      // print out the value you read:
+    // If the semaphore is not available, wait 5 ticks of the Scheduler to see
+    // if it becomes free.
+    if (xSemaphoreTake(xSerialSemaphore, (TickType_t)5) == pdTRUE) {
+      // We were able to obtain or "Take" the semaphore and can now access the
+      // shared resource. We want to have the Serial Port for us alone, as it
+      // takes some time to print, so we don't want it getting stolen during the
+      // middle of a conversion. print out the value you read:
       Serial.println(sensorValue);
 
-      xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+      xSemaphoreGive(
+          xSerialSemaphore); // Now free or "Give" the Serial Port for others.
     }
 
-    vTaskDelay(1);  // one tick delay (15ms) in between reads for stability
+    vTaskDelay(1); // one tick delay (15ms) in between reads for stability
   }
 }
