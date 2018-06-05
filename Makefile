@@ -14,4 +14,5 @@ examples: ${SUBMAKE}
 
 .PHONY: ${SUBMAKE}
 ${SUBMAKE}:
-	-@${MAKE} -C $(@D)
+	-@${MAKE} -C $(@D) BOARD_TAG=uno
+	-@${MAKE} -C $(@D) BOARD_TAG=nano
