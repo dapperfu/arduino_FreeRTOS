@@ -1,6 +1,6 @@
 # Build Settings
 ARCHITECTURE ?= avr
-BOARD_TAG ?= nano
+BOARD_TAG ?= uno
 BOARD_SUB ?= atmega328
 
 # Environment Settings.
