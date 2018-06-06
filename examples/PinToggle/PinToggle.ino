@@ -208,57 +208,11 @@ void vToggleDelayUntil09(void *pvParameters) {
   }
 }
 
-void vToggleCallback10(TimerHandle_t xTimer) {
-
-  /* Optionally do something if the pxTimer parameter is NULL. */
-  configASSERT(pxTimer);
-  static bool pin_state = false;
-  // Get the timer ID.
-  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 10);
-
-  pin_state = !pin_state;
-  digitalWrite(10, pin_state);
-}
-
-void vToggleCallback11(TimerHandle_t xTimer) {
-
-  /* Optionally do something if the pxTimer parameter is NULL. */
-  configASSERT(pxTimer);
-
-  static bool pin_state = false;
-
-  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 11);
-
-  pin_state = !pin_state;
-  digitalWrite(11, pin_state);
-}
-
-void vToggleCallback12(TimerHandle_t xTimer) {
-
-  /* Optionally do something if the pxTimer parameter is NULL. */
-  configASSERT(pxTimer);
-  static bool pin_state = false;
-
-  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 12);
-
-  pin_state = !pin_state;
-  digitalWrite(12, pin_state);
-}
-
-void vToggleCallback13(TimerHandle_t xTimer) {
-
-  /* Optionally do something if the pxTimer parameter is NULL. */
-  configASSERT(pxTimer);
-  static bool pin_state = false;
-
-  // Get the timer ID.
-  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 13);
-
-  pin_state = !pin_state;
-  digitalWrite(13, pin_state);
-}
-
 TaskHandle_t xHandle = NULL;
+
+/*
+ * Tasks
+ */
 
 typedef struct cfg_xTaskCreate {
   TaskFunction_t pvTaskCode;
@@ -308,8 +262,7 @@ cfg_xTaskCreate_t __attribute__((section("CFG_TASK_CREATE09"))) cfg_task_create0
 };
 
 /*
- *
- *
+ * Timers
  */
 
 typedef struct cfg_xTimerCreate {
@@ -326,18 +279,64 @@ TimerHandle_t xTimerCreateCreate(cfg_xTimerCreate_t timer) {
   return xTimer;
 }
 
+void vToggleCallback10(TimerHandle_t xTimer) {
+
+  /* Optionally do something if the pxTimer parameter is NULL. */
+  configASSERT(pxTimer);
+  static bool pin_state = false;
+  // Get the timer ID.
+  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 10);
+
+  pin_state = !pin_state;
+  digitalWrite(10, pin_state);
+}
 cfg_xTimerCreate_t __attribute__((section("CFG_TIMER_CREATE10"))) cfg_timer_create10 = {
     "Timer10", ticks[0], pdTRUE, (void *)10, vToggleCallback10,
 };
 
+void vToggleCallback11(TimerHandle_t xTimer) {
+
+  /* Optionally do something if the pxTimer parameter is NULL. */
+  configASSERT(pxTimer);
+
+  static bool pin_state = false;
+
+  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 11);
+
+  pin_state = !pin_state;
+  digitalWrite(11, pin_state);
+}
 cfg_xTimerCreate_t __attribute__((section("CFG_TIMER_CREATE11"))) cfg_timer_create11 = {
     "Timer11", ticks[1], pdTRUE, (void *)11, vToggleCallback11,
 };
 
+void vToggleCallback12(TimerHandle_t xTimer) {
+
+  /* Optionally do something if the pxTimer parameter is NULL. */
+  configASSERT(pxTimer);
+  static bool pin_state = false;
+
+  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 12);
+
+  pin_state = !pin_state;
+  digitalWrite(12, pin_state);
+}
 cfg_xTimerCreate_t __attribute__((section("CFG_TIMER_CREATE12"))) cfg_timer_create12 = {
     "Timer12", ticks2, pdTRUE, (void *)12, vToggleCallback12,
 };
 
+void vToggleCallback13(TimerHandle_t xTimer) {
+
+  /* Optionally do something if the pxTimer parameter is NULL. */
+  configASSERT(pxTimer);
+  static bool pin_state = false;
+
+  // Get the timer ID.
+  configASSERT((uint32_t)pvTimerGetTimerID(xTimer) == 13);
+
+  pin_state = !pin_state;
+  digitalWrite(13, pin_state);
+}
 cfg_xTimerCreate_t __attribute__((section("CFG_TIMER_CREATE13"))) cfg_timer_create13 = {
     "Timer13", ticks3, pdTRUE, (void *)13, vToggleCallback13,
 };
