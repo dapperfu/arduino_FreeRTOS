@@ -203,122 +203,94 @@ void setup() {
   xTaskCreate(vToggleDelayPin02,    /* Function that implements the task. */
               "vToggleDelayTask02", /* Text name for the task. */
               128,                  /* Stack size in words, not bytes. */
-              (void *)0,             /* Parameter passed into the task. */
+              (void *)0,            /* Parameter passed into the task. */
               tskIDLE_PRIORITY,     /* Priority at which the task is created. */
               &xHandle2);           /* Used to pass out the created task's handle. */
   xTaskCreate(vToggleDelayPin03,    /* Function that implements the task. */
               "vToggleDelayTask03", /* Text name for the task. */
               128,                  /* Stack size in words, not bytes. */
-              (void *)0,             /* Parameter passed into the task. */
+              (void *)0,            /* Parameter passed into the task. */
               tskIDLE_PRIORITY,     /* Priority at which the task is created. */
               &xHandle3);           /* Used to pass out the created task's handle. */
   xTaskCreate(vToggleDelayPin04,    /* Function that implements the task. */
               "vToggleDelayTask04", /* Text name for the task. */
               128,                  /* Stack size in words, not bytes. */
-              (void *)0,             /* Parameter passed into the task. */
+              (void *)0,            /* Parameter passed into the task. */
               tskIDLE_PRIORITY,     /* Priority at which the task is created. */
               &xHandle4);           /* Used to pass out the created task's handle. */
   xTaskCreate(vToggleDelayPin05,    /* Function that implements the task. */
               "vToggleDelayTask05", /* Text name for the task. */
               128,                  /* Stack size in words, not bytes. */
-              (void *)0,             /* Parameter passed into the task. */
+              (void *)0,            /* Parameter passed into the task. */
               tskIDLE_PRIORITY,     /* Priority at which the task is created. */
               &xHandle5);           /* Used to pass out the created task's handle. */
-              
-              
+
   xTaskCreate(vToggleDelayUntilPin06, /* Function that implements the task. */
               "vToggleDelayTask06",   /* Text name for the task. */
               128,                    /* Stack size in words, not bytes. */
-              (void *)0,               /* Parameter passed into the task. */
+              (void *)0,              /* Parameter passed into the task. */
               tskIDLE_PRIORITY,       /* Priority at which the task is created. */
-              &xHandle6);             /* Used to pass out the created task's handle. */              
-              
+              &xHandle6);             /* Used to pass out the created task's handle. */
+
   xTaskCreate(vToggleDelayUntilPin07, /* Function that implements the task. */
               "vToggleDelayTask07",   /* Text name for the task. */
               128,                    /* Stack size in words, not bytes. */
-              (void *)0,               /* Parameter passed into the task. */
+              (void *)0,              /* Parameter passed into the task. */
               tskIDLE_PRIORITY,       /* Priority at which the task is created. */
               &xHandle7);             /* Used to pass out the created task's handle. */
-              
-                        
-              
+
   xTaskCreate(vToggleDelayUntilPin08, /* Function that implements the task. */
               "vToggleDelayTask08",   /* Text name for the task. */
               128,                    /* Stack size in words, not bytes. */
-              (void *)0,               /* Parameter passed into the task. */
+              (void *)0,              /* Parameter passed into the task. */
               tskIDLE_PRIORITY,       /* Priority at which the task is created. */
               &xHandle8);             /* Used to pass out the created task's handle. */
-              
-              
+
   xTaskCreate(vToggleDelayUntilPin09, /* Function that implements the task. */
               "vToggleDelayTask06",   /* Text name for the task. */
               128,                    /* Stack size in words, not bytes. */
-              (void *)0,               /* Parameter passed into the task. */
+              (void *)0,              /* Parameter passed into the task. */
               tskIDLE_PRIORITY,       /* Priority at which the task is created. */
               &xHandle9);             /* Used to pass out the created task's handle. */
   // Timers
   TimerHandle_t xTimer10;
-  xTimer10 = xTimerCreate(/* Just a text name, not used by the RTOS
-                   kernel. */
-                          "vToggleTimer10",
-                          /* The timer period in ticks, must be
-                          greater than 0. */
-                          ticks0,
-                          /* The timers will auto-reload themselves
-                          when they expire. */
-                          pdTRUE,
-                          /* The ID */
-                          (void *)0,
-                          /* Each timer calls the same callback when
-                          it expires. */
-                          vToggleCallback10);
-
   TimerHandle_t xTimer11;
-  xTimer11 = xTimerCreate(/* Just a text name, not used by the RTOS
-                   kernel. */
-                          "vToggleTimer11",
-                          /* The timer period in ticks, must be
-                          greater than 0. */
-                          ticks1,
-                          /* The timers will auto-reload themselves
-                          when they expire. */
-                          pdTRUE,
-                          /* The ID */
-                          (void *)0,
-                          /* Each timer calls the same callback when
-                          it expires. */
-                          vToggleCallback11);
-
   TimerHandle_t xTimer12;
-  xTimer12 = xTimerCreate("vToggleTimer12",  // Just a text name, not used by the RTOS kernel
-                          ticks2,            // The timer period in ticks, must be greater than 0.
-                          pdTRUE,            // The timers will auto-reload themselveswhen they expire.
-                          (void *)12,        // The ID
-                          vToggleCallback12  // Each timer calls the same callback when it expires.
+  TimerHandle_t xTimer13;
+
+  xTimer10 = xTimerCreate("vToggleTimer10", // Just a text name, not used by the RTOS kernel
+                          ticks0,           // The timer period in ticks, must be greater than 0.
+                          pdTRUE,           // The timers will auto-reload themselveswhen they expire.
+                          (void *)10,       // The ID
+                          vToggleCallback10 // Each timer calls the same callback when it expires.
   );
 
-  TimerHandle_t xTimer13;
-  xTimer13 = xTimerCreate(/* Just a text name, not used by the RTOS
-                  kernel. */
-                          "vToggleTimer13",
-                          /* The timer period in ticks, must be
-                          greater than 0. */
-                          ticks3,
-                          /* The timers will auto-reload themselves
-                          when they expire. */
-                          pdTRUE,
-                          /* The ID */
-                          (void *)0,
-                          /* Each timer calls the same callback when
-                          it expires. */
-                          vToggleCallback13);
+  xTimer11 = xTimerCreate("vToggleTimer11", // Just a text name, not used by the RTOS kernel
+                          ticks1,           // The timer period in ticks, must be greater than 0.
+                          pdTRUE,           // The timers will auto-reload themselveswhen they expire.
+                          (void *)11,       // The ID
+                          vToggleCallback11 // Each timer calls the same callback when it expires.
+  );
+  xTimer12 = xTimerCreate("vToggleTimer12", // Just a text name, not used by the RTOS kernel
+                          ticks2,           // The timer period in ticks, must be greater than 0.
+                          pdTRUE,           // The timers will auto-reload themselveswhen they expire.
+                          (void *)12,       // The ID
+                          vToggleCallback12 // Each timer calls the same callback when it expires.
+  );
+
+  xTimer13 = xTimerCreate("vToggleTimer13", // Just a text name, not used by the RTOS kernel
+                          ticks2,           // The timer period in ticks, must be greater than 0.
+                          pdTRUE,           // The timers will auto-reload themselveswhen they expire.
+                          (void *)13,       // The ID
+                          vToggleCallback13 // Each timer calls the same callback when it expires.
+  );
 
   xTimerStart(xTimer10, 0);
   xTimerStart(xTimer11, 0);
   xTimerStart(xTimer12, 0);
   xTimerStart(xTimer13, 0);
 
-vTaskStartScheduler();
+  vTaskStartScheduler();
 
   while (!Serial) {
   }
