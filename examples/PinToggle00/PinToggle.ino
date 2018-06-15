@@ -191,6 +191,19 @@ void vToggleCallback13(TimerHandle_t xTimer) {
 void setup() {
   Serial.begin(115200);
 
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+
   TaskHandle_t xHandle2 = NULL;
   TaskHandle_t xHandle3 = NULL;
   TaskHandle_t xHandle4 = NULL;
