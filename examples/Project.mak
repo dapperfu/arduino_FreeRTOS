@@ -19,3 +19,7 @@ format:
 	clang-format-6.0 -i -style=file *.ino
 	clang-format-6.0 -i -style=file *.h
 	clang-format-6.0 -i -style=file *.c
+
+low_pass: low_pass.c
+	clang-6.0 -o ${@} ${^}
+
