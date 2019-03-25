@@ -11,9 +11,9 @@ all: $(SUBMAKE)
 clean: $(SUBCLEAN)
 
 $(SUBMAKE): force
-	-@$(MAKE) -C $(@D)
+	@$(MAKE) -C $(@D)
 
 $(SUBCLEAN): %.clean : force
-	-@$(MAKE) -C $(@D) clean
+	@$(MAKE) -C $(@D) clean
 
 
