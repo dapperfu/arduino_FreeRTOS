@@ -3,16 +3,18 @@ pipeline {
   stages {
     stage('Environment') {
       steps {
-        sh '''
+        sh '''# Shell Script
 git submodule update --init;
-make clean;
 make env;
 '''
       }
     }
     stage('Examples') {
       steps {
-        sh 'make -f ${WORKSPACE}/examples/Makefile'
+        timestamps() {
+          sh 'make -f ${WORKSPACE}/examples/Makefile'
+        }
+
       }
     }
   }
