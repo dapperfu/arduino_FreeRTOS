@@ -21,7 +21,7 @@ make env;
     stage('Example2') {
       steps {
         timestamps() {
-          dir(path: '${WORKSPACE}/examples') {
+          dir(path: 'examples') {
             recordIssues(aggregatingResults: true, enabledForFailure: true)
             sh '''# Clean & Build
 make clean;
