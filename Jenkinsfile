@@ -13,6 +13,7 @@ make env;
       steps {
         timestamps() {
           sh 'make -f ${WORKSPACE}/examples/Makefile'
+          scanForIssues()
         }
 
       }
