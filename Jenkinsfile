@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('Environment') {
       steps {
-        sh '''make clean;
+        sh '''git submodule update --init
+make clean;
 make env;'''
       }
     }
