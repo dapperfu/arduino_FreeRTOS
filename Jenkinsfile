@@ -3,9 +3,11 @@ pipeline {
   stages {
     stage('Environment') {
       steps {
-        sh '''git submodule update --init
+        sh '''
+git submodule update --init;
 make clean;
-make env;'''
+make env;
+'''
       }
     }
     stage('Examples') {
