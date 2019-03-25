@@ -22,10 +22,10 @@ make env;
       steps {
         timestamps() {
           dir(path: 'examples') {
-            recordIssues(aggregatingResults: true, enabledForFailure: true)
             sh '''# Clean & Build
 make clean;
 make -j6'''
+            recordIssues(aggregatingResults: true, enabledForFailure: true)
           }
 
         }
