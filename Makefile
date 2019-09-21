@@ -15,4 +15,4 @@ examples: ${SUBMAKE}
 .PHONY: ${SUBMAKE}
 ${SUBMAKE}:
 	-@${MAKE} -C $(@D) BOARD_TAG=uno
-	-@${MAKE} -C $(@D) BOARD_TAG=nano
+	-@${MAKE} -C $(@D) BOARD_TAG=nano MCU=atmega328
