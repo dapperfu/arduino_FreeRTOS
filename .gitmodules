@@ -10,3 +10,6 @@
 [submodule "libraries/SD"]
 	path = libraries/SD
 	url = https://github.com/arduino-libraries/SD.git
+[submodule "libraries/LiquidCrystal"]
+	path = libraries/LiquidCrystal
+	url = https://github.com/arduino-libraries/LiquidCrystal.git
