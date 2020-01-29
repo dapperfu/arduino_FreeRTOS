@@ -14,6 +14,14 @@ Needs done once per machine/host.
 
     sudo make env.host # From regular user.
     make env.host # As root
+    
+Setup 
+- Arduino
+- Arduino Make
+- Python
+
+    make env
+    
 
 ## Build examples.
 
