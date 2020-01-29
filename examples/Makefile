@@ -1,19 +1,17 @@
+SRC=$(wildcard src/*) $(wildcard include/*)
 
-# Get all subdirectories that contain a makefile.
-SUBMAKE=$(wildcard */Makefile)
-# Artificially append a .clean to the end of it to clean.
-SUBCLEAN = $(addsuffix .clean,$(SUBMAKE))
-# Register the phony files.
-.PHONY: force clean $(SUBCLEAN)
+.pio/build/uno/firmware.hex: ${SRC}
+	${MAKE} format
+	platformio run
 
-# make all & make clean.
-all: $(SUBMAKE)
-clean: $(SUBCLEAN)
+.PHONY: upload
+upload: .pio/build/uno/firmware.hex
+	avrdude -v -V -p m328p -c arduino -P /dev/ttyUSB0 -D -U flash:w:${^}
 
-$(SUBMAKE): force
-	@$(MAKE) -C $(@D)
+.PHONY: format
+format:
+	clang-format -i ${SRC}
 
-$(SUBCLEAN): %.clean : force
-	@$(MAKE) -C $(@D) clean
-
-
+.PHONY: clean
+clean:
+	rm -rf .pio
