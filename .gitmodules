@@ -1,12 +1,3 @@
 [submodule ".mk_inc"]
 	path = .mk_inc
 	url = https://github.com/jed-frey/make_sandwich.git
-[submodule "Lib/Arduino_FreeRTOS_Library"]
-	path = Lib/Arduino_FreeRTOS_Library
-	url = https://github.com/feilipu/Arduino_FreeRTOS_Library.git
-[submodule "libraries/Arduino_FreeRTOS_Library"]
-	path = libraries/Arduino_FreeRTOS_Library
-	url = git@github.com:jed-frey/Arduino_FreeRTOS_Library.git
-[submodule "libraries/SD"]
-	path = libraries/SD
-	url = https://github.com/arduino-libraries/SD.git
