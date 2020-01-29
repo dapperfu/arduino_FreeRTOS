@@ -1,7 +1,7 @@
 # Build Settings
 ARCHITECTURE ?= avr
-BOARD_TAG ?= nano
-BOARD_SUB ?= atmega328
+BOARD_TAG ?= uno
+#BOARD_SUB ?= atmega328
 
 # Environment Settings.
 ARDUINO_DIR?=$(realpath ../../arduino)
