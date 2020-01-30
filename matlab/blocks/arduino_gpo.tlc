@@ -1,0 +1,69 @@
+%% File : arduino_gpio.tlc
+%implements  arduino_gpo "C"
+
+%% Function: BlockInstanceSetup ===================================================
+%%
+%% Purpose:
+%%      Set up external references for wrapper functions in the 
+%%      generated code.
+%%
+%function BlockInstanceSetup(block, system) Output
+%endfunction
+
+%% Function: BlockTypeSetup ===================================================
+%%
+%% Purpose:
+%%      Set up external references for wrapper functions in the 
+%%      generated code.
+%%
+%function BlockTypeSetup(block, system) Output
+    %<LibAddToCommonIncludes("driver/gpio.h")>
+%endfunction
+
+%% Function: Enable =============================================================
+%%
+%function Enable(block, system) Output
+%endfunction
+
+%% Function: Disable =============================================================
+%%
+%function Disable(block, system) Output
+%endfunction
+
+%% InitializeConditions: Start =============================================================
+%%
+%function InitializeConditions(block, system) Output
+    /* InitializeConditions espidf output: %<Name> */
+    gpio_set_direction(%<block.ParamSettings.gpio_num>, GPIO_MODE_OUTPUT);
+%endfunction
+
+%% Function: Start =============================================================
+%%
+%function Start(block, system) Output
+%endfunction
+
+%% Function: Outputs ==========================================================
+%%openfile
+%% Purpose:
+%%      Code generation rules for mdlOutputs function.
+%%
+%function Outputs(block, system) Output
+    /* output: esp-idf output: %<Name>  %<Identifier>*/
+    gpio_set_level(%<block.ParamSettings.gpio_num>,%<LibBlockInputSignal(0, "", "", 0)>);
+%endfunction
+
+%% Function: Update =============================================================
+%%
+%function Update(block, system) Output
+%endfunction
+
+
+%% Function: Terminate =============================================================
+%%
+%function Derivatives(block, system) Output
+%endfunction
+
+%% Function: Terminate =============================================================
+%%
+%function Terminate(block, system) Output
+%endfunction

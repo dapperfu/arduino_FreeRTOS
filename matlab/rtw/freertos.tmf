@@ -1,0 +1,4 @@
+# esp-idf Makefile
+MODEL           = |>MODEL_NAME<|
+MODULES         = |>MODEL_MODULES<|
+SYS_TARGET_FILE = espidf.tlc

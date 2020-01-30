@@ -1,4 +1,4 @@
-SRC=$(wildcard src/*.c) $(wildcard include/*.h)
+SRC=$(wildcard src/*) $(wildcard include/*)
 
 .pio/build/uno/firmware.hex: ${SRC}
 	${MAKE} format

@@ -12,3 +12,4 @@ share/
 
 **/build-*
 .pio
+.ipynb_checkpoints

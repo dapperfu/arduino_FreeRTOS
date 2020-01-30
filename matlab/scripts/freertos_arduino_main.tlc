@@ -1,0 +1,117 @@
+%selectfile NULL_FILE
+%<LibSetCodeTemplateComplianceLevel(2)>
+
+%assign CodeFormat = "Embedded-C"
+
+%warning Create real-time application main.c
+%assign modelName = LibGetModelName()
+%assign cFile = LibCreateSourceFile("Source", "Custom", "main")
+%assign NbOfTasks = LibGetNumSyncPeriodicTasks()
+
+%<LibAddToModelSources("rt_nonfinite")>
+%openfile main_Buf
+#include <Arduino.h>
+#include <Arduino_FreeRTOS.h>
+
+#include "%<LibGetMdlSrcBaseName()>.h"         /* Model's header file */
+#include "%<LibGetMdlSrcBaseName()>_private.h" /* Model's private header file */
+%closefile main_Buf
+%<LibSetSourceFileSection(cFile, "Includes", main_Buf)>
+
+%openfile main_Buf
+/* 	SolverMode = %<FixedStepOpts.SolverMode> */
+%closefile main_Buf
+%<LibSetSourceFileSection(cFile, "Defines", main_Buf)>
+
+%if ISEQUAL(FixedStepOpts.SolverMode,"SingleTasking")
+%% Single Tasking
+    %assign tidIdx = 0
+    %assign MS = CAST("Number",FundamentalStepSize*1000)
+
+%openfile main_Buf
+void simulink_embedded_coder_task(void *pvParameter)
+{
+    TickType_t xLastWakeTime;
+    vTaskDelayUntil(&xLastWakeTime, %<MS> / portTICK_PERIOD_MS);
+    for(;;) {
+         %<LibGetMdlSrcBaseName()>_step();
+         vTaskDelayUntil(&xLastWakeTime, %<MS> / portTICK_PERIOD_MS);
+    }
+
+}
+%closefile main_Buf
+%<LibSetSourceFileSection(cFile, "Defines", main_Buf)>
+
+%openfile main_Buf
+%<LibGetMdlSrcBaseName()>_initialize();
+void setup() {
+    /* Start Threads */
+    xTaskCreate(&simulink_embedded_coder_task, "simulink_embedded_coder_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
+    /* Infinite loop */
+    for(;;) {
+        /* Add code here */
+    }
+    return 0;
+}
+
+
+void loop() {
+
+}
+%closefile main_Buf 
+%<LibSetSourceFileSection(cFile, "Functions", main_Buf)>
+
+%else
+%% Multi Tasking
+%openfile main_Buf
+    /* Model has %<FcnNumST()> rates */
+    %foreach tidIdx = NumRuntimeExportedRates
+      %if (FixedStepOpts.TID01EQ && tidIdx == 1 && !SLibConcurrentTasks()) || ...
+            (ISEQUAL(tidIdx, NumSynchronousSampleTimes -1) && SLibConcurrentTasks()...
+            && FixedStepOpts.TID01EQ)
+        %continue
+      %endif
+    %assign MS       = CAST("Number",SampleTime[tidIdx].PeriodAndOffset[0]*1000)
+    %assign MSoffset = CAST("Number",SampleTime[tidIdx].PeriodAndOffset[1]*1000)
+void simulink_embedded_coder_task%<tidIdx>(void *pvParameter)
+{
+    TickType_t xLastWakeTime;
+    vTaskDelay(%<MSoffset> / portTICK_PERIOD_MS);
+    xLastWakeTime = xTaskGetTickCount();
+while(1) {
+      %if !SLibConcurrentTasks() || !(FixedStepOpts.TID01EQ && tidIdx>0)
+        %assign rootSystem.CurrentTID = tidIdx
+        %<SLibModelStepFcnName(tidIdx)>(%<GetErtModelFcnArgs("OutputUpdate",2,tidIdx)>);
+      %else
+        %assign rootSystem.CurrentTID = tidIdx + 1
+        %<SLibModelStepFcnName(tidIdx+1)>(%<GetErtModelFcnArgs("OutputUpdate",2,tidIdx+1)>);
+      %endif
+     vTaskDelayUntil(&xLastWakeTime, %<MS> / portTICK_PERIOD_MS);
+}
+}
+    %endforeach
+%closefile main_Buf
+%<LibSetSourceFileSection(cFile, "Defines", main_Buf)>
+
+%openfile main_Buf
+void setup() {
+%<LibGetMdlSrcBaseName()>_initialize();
+/* Start Threads */
+%foreach tidIdx = NumSynchronousSampleTimes
+    %if (FixedStepOpts.TID01EQ && tidIdx == 1 && !SLibConcurrentTasks()) || ...
+        (ISEQUAL(tidIdx, NumSynchronousSampleTimes -1) && SLibConcurrentTasks()...
+        && FixedStepOpts.TID01EQ)
+        %continue
+    %endif
+    xTaskCreate(&simulink_embedded_coder_task%<tidIdx>, "simulink_embedded_coder_task%<tidIdx>", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
+%endforeach
+}
+
+void loop() {}
+%closefile main_Buf
+%<LibSetSourceFileSection(cFile, "Functions", main_Buf)>
+
+%endif
+
+%% Clean up indentation on the cFile.
+%<LibIndentSourceFile(cFile,"")>

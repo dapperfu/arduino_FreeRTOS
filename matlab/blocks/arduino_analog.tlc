@@ -1,0 +1,66 @@
+%% File : arduino_analog.tlc
+%implements  arduino_analog "C"
+
+%% Function: BlockInstanceSetup ===================================================
+%%
+%% Purpose:
+%%      Set up external references for wrapper functions in the 
+%%      generated code.
+%%
+%function BlockInstanceSetup(block, system) Output
+%endfunction
+
+%% Function: BlockTypeSetup ===================================================
+%%
+%% Purpose:
+%%      Set up external references for wrapper functions in the 
+%%      generated code.
+%%
+%function BlockTypeSetup(block, system) Output
+    %<LibAddToCommonIncludes("<Arduino.h>")>
+%endfunction
+
+%% Function: Enable =============================================================
+%%
+%function Enable(block, system) Output
+%endfunction
+
+%% Function: Disable =============================================================
+%%
+%function Disable(block, system) Output
+%endfunction
+
+%% InitializeConditions: Start =============================================================
+%%
+%function InitializeConditions(block, system) Output
+%endfunction
+
+%% Function: Start =============================================================
+%%
+%function Start(block, system) Output
+%endfunction
+
+%% Function: Outputs ==========================================================
+%%openfile
+%% Purpose:
+%%      Code generation rules for mdlOutputs function.
+%%
+%function Outputs(block, system) Output
+	%assign y1_val = LibBlockOutputSignal(0, "", "", 0)
+	%<y1_val> = analogRead(%<block.ParamSettings.analog_pin>);
+%endfunction
+
+%% Function: Update =============================================================
+%%
+%function Update(block, system) Output
+%endfunction
+
+%% Function: Terminate =============================================================
+%%
+%function Derivatives(block, system) Output
+%endfunction
+
+%% Function: Terminate =============================================================
+%%
+%function Terminate(block, system) Output
+%endfunction
