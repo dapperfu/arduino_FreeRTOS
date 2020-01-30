@@ -1,10 +1,12 @@
 %selectfile NULL_FILE
 %<LibSetCodeTemplateComplianceLevel(2)>
 
-%%%%MyTLC.tlc
-%assign name = "configFreeRTOS_HelloWorld"
+%%%%configFreeRTOS_HelloWorld.tlc
+%assign name = "FreeRTOSConfig"
 %assign hFile = LibCreateSourceFile("Header", "Custom", "%<name>")
 %openfile contentBuf
+#define configSUPPORT_STATIC_ALLOCATION         1
+#define configSUPPORT_DYNAMIC_ALLOCATION        0
 %closefile contentBuf
 %<LibSetSourceFileSection(hFile,"Functions",contentBuf)>
 
@@ -53,7 +55,7 @@ void simulink_embedded_coder_task(void *pvParameter)
 void setup() {
     %<LibGetMdlSrcBaseName()>_initialize();
     /* Start Threads */
-    xTaskCreate(&simulink_embedded_coder_task, "simulink_embedded_coder_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
+    xTaskCreateStatic(&simulink_embedded_coder_task, "simulink_embedded_coder_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
     /* Infinite loop */
     for(;;) {
         /* Add code here */

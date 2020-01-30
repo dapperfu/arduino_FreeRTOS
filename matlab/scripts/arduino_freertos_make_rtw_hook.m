@@ -76,28 +76,42 @@ switch hookMethod
         % Called at start of code generation process (before anything happens.)
         % Valid arguments at this stage are hookMethod, modelName, and buildArgs.
         msg = DAStudio.message('RTW:makertw:enterRTWBuild', modelName);
+        [status,result] = system('git init');
         disp(msg);
         
     case 'before_tlc'
         % Called just prior to invoking TLC Compiler (actual code generation.)
         % Valid arguments at this stage are hookMethod, modelName, and
         % buildArgs
+        [status,result] = system('git add .');
+        [status,result] = system(sprintf('git commit -am "%s: %s"', hookMethod, modelName);
         
         
     case 'after_tlc'
         % Called just after to invoking TLC Compiler (actual code generation.)
         % Valid arguments at this stage are hookMethod, modelName, and
         % buildArgs
+        [status,result] = system('git add .');
+        [status,result] = system(sprintf('git commit -am "%s: %s"', hookMethod, modelName);
+        
         
     case 'before_make'
         % Called after code generation is complete, and just prior to kicking
         % off make process (assuming code generation only is not selected.)  All
         % arguments are valid at this stage.
+        
         simulinkdevops.platformio_rtw(hookMethod,modelName,rtwroot,templateMakefile,buildOpts,buildArgs);
+        
+        [status,result] = system('git add .');
+        [status,result] = system(sprintf('git commit -am "%s: %s"', hookMethod, modelName);
         
     case 'after_make'
         % Called after make process is complete. All arguments are valid at
         % this stage.
+        [status,result] = system('git add .');
+        [status,result] = system(sprintf('git commit -am "%s: %s"', hookMethod, modelName);
+        
+        
         
     case 'exit'
         % Called at the end of the build process.  All arguments are valid
@@ -109,4 +123,8 @@ switch hookMethod
         end
         msg = DAStudio.message(msgID,modelName);
         disp(msg);
+        
+        [status,result] = system('git add .');
+        [status,result] = system(sprintf('git commit -am "%s: %s"', hookMethod, modelName);
+        
 end

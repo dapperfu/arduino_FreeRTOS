@@ -14,7 +14,7 @@ if ~strcmpi(get_param(0, 'CharacterEncoding'), 'UTF-8')
     warning('Simulink:EncodingUnMatched', 'The target character encoding (%s) is different from the original (%s).',  get_param(0, 'CharacterEncoding'), 'UTF-8');
 end
 
-% Do not change the order of the following commands. There are dependencies between the parameters.
+% Do noatmet change the order of the following commands. There are dependencies between the parameters.
 cs.set_param('Name', 'Configuration'); % Name
 cs.set_param('Description', ''); % Description
 

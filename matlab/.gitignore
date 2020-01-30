@@ -1,0 +1,6 @@
+PREFDIR/
+build/
+*.log
+slprj/
+*.slxc
+
