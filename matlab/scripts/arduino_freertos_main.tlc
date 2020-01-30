@@ -1,6 +1,13 @@
 %selectfile NULL_FILE
 %<LibSetCodeTemplateComplianceLevel(2)>
 
+%%%%MyTLC.tlc
+%assign name = "configFreeRTOS_HelloWorld"
+%assign hFile = LibCreateSourceFile("Header", "Custom", "%<name>")
+%openfile contentBuf
+%closefile contentBuf
+%<LibSetSourceFileSection(hFile,"Functions",contentBuf)>
+
 %assign CodeFormat = "Embedded-C"
 
 %warning Create real-time application main.c
@@ -43,8 +50,8 @@ void simulink_embedded_coder_task(void *pvParameter)
 %<LibSetSourceFileSection(cFile, "Defines", main_Buf)>
 
 %openfile main_Buf
-%<LibGetMdlSrcBaseName()>_initialize();
 void setup() {
+    %<LibGetMdlSrcBaseName()>_initialize();
     /* Start Threads */
     xTaskCreate(&simulink_embedded_coder_task, "simulink_embedded_coder_task", configMINIMAL_STACK_SIZE, NULL, 5, NULL);
     /* Infinite loop */

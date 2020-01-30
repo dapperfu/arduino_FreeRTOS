@@ -14,14 +14,14 @@ function SolverTab(hDlg,hSrc) %#ok<*DEFNU>
 slConfigUISetVal(hDlg, hSrc,     'SolverName','FixedStepDiscrete')
 slConfigUISetEnabled(hDlg, hSrc, 'SolverName', false);
 
-slConfigUISetVal(hDlg, hSrc,     'FixedStep','0.15')
+slConfigUISetVal(hDlg, hSrc,     'FixedStep','0.05')
 slConfigUISetEnabled(hDlg, hSrc, 'FixedStep', true);
 
 %% General tab *************************************************************
 function CodeGenerationTab(hDlg, hSrc)
-% Force building to be a second step.
-slConfigUISetVal(hDlg, hSrc, 'GenCodeOnly', 'on')
-slConfigUISetEnabled(hDlg, hSrc, 'GenCodeOnly', false);
+% % Force building to be a second step.
+% slConfigUISetVal(hDlg, hSrc, 'GenCodeOnly', 'on')
+% slConfigUISetEnabled(hDlg, hSrc, 'GenCodeOnly', false);
 
 slConfigUISetVal(hDlg, hSrc,     'GenerateMakefile','on')
 slConfigUISetEnabled(hDlg, hSrc, 'GenerateMakefile', false);
