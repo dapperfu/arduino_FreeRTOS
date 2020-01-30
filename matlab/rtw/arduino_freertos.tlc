@@ -1,0 +1,28 @@
+%% SYSTLC: arduino_freertos TMF: arduino_freertos.tmf MAKE: make_rtw EXTMODE: no_ext_mode
+
+%selectfile NULL_FILE
+
+%%
+%% System Target File for arduino_freertos.tlc
+%%
+%% $ espidf.tlc 2020-Jan jaf $
+%%
+
+%assign CodeFormat = "Embedded-C"
+%assign TargetType = "RT"
+%assign Language   = "C"
+
+%include "codegenentry.tlc"
+/%
+  BEGIN_RTW_OPTIONS
+  %----------------------------------------%
+  % Configure RTW code generation settings %
+  %----------------------------------------%
+  rtwgensettings.DerivedFrom = 'ert.tlc';
+  rtwgensettings.BuildDirSuffix = '_arduino_freertos_rtw';
+  rtwgensettings.Version = '1';
+  rtwgensettings.SelectCallback = ['arduino_freertos_SelectCallback(hDlg, hSrc)'];
+  rtwgensettings.ActivateCallback = ['arduino_freertos_ActivateCallback(hDlg, hSrc)'];
+  rtwgensettings.PostApplyCallback = ['arduino_freertos_PostApplyCallback(hDlg, hSrc)'];
+  END_RTW_OPTIONS 
+ %/

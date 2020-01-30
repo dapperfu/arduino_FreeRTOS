@@ -1,4 +1,4 @@
-function espidf_arduino_make_rtw_hook(hookMethod,modelName,rtwroot,templateMakefile,buildOpts,buildArgs)
+function arduino_freertos_make_rtw_hook(hookMethod,modelName,rtwroot,templateMakefile,buildOpts,buildArgs)
 % ERT_MAKE_RTW_HOOK - This is the standard ERT hook file for the build
 % process (make_rtw), and implements automatic configuration of the
 % models configuration parameters.  When the buildArgs option is specified
@@ -83,6 +83,7 @@ switch hookMethod
         % Valid arguments at this stage are hookMethod, modelName, and
         % buildArgs
         
+        
     case 'after_tlc'
         % Called just after to invoking TLC Compiler (actual code generation.)
         % Valid arguments at this stage are hookMethod, modelName, and
@@ -92,23 +93,12 @@ switch hookMethod
         % Called after code generation is complete, and just prior to kicking
         % off make process (assuming code generation only is not selected.)  All
         % arguments are valid at this stage.
-        fid=fopen('Makefile','w');
-        fprintf(fid,'\t### Modelname %s',modelName);
-        fclose(fid);
-        fid = fopen('platformio.ini', 'a');
-        fprintf(fid, '[platformio]\n');
-        fprintf(fid, 'src_dir = .\n');
-        fprintf(fid, 'include_dir = .\n\n');
-        fprintf(fid, '[env:esp-wrover-kit]\n');
-        fprintf(fid, 'platform = espressif32\n');
-        fprintf(fid, 'framework = espidf\n');
-        fprintf(fid, 'board = esp-wrover-kit\n');
-        fprintf(fid, 'monitor_speed = 115200\n');
-        fclose(fid);
+        simulinkdevops.platformio_rtw(hookMethod,modelName,rtwroot,templateMakefile,buildOpts,buildArgs);
         
     case 'after_make'
         % Called after make process is complete. All arguments are valid at
         % this stage.
+        
     case 'exit'
         % Called at the end of the build process.  All arguments are valid
         % at this stage.

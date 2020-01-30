@@ -1,8 +1,8 @@
-function espidf_DefaultConfigSet(hDlg, hSrc)
-% espidf_DEFAULTCONFIGSET sets the target
+function arduino_freertos_DefaultConfigSet(hDlg, hSrc)
+% arduino_freertos_DefaultConfigSet sets the target
 
 disp(mfilename)
-%% Set default RTW parameters for ChibiOS target:
+%% Set default RTW parameters for Arduino FreeRTOS target:
 tabs={'SolverTab', 'CodeStyleTab', 'CodeGenerationTab', 'ReportTab', 'InterfaceTab', 'TemplatesTab', 'CodeStyleTab'};
 n=numel(tabs);
 for i=1:n
@@ -19,6 +19,10 @@ slConfigUISetEnabled(hDlg, hSrc, 'FixedStep', true);
 
 %% General tab *************************************************************
 function CodeGenerationTab(hDlg, hSrc)
+% Force building to be a second step.
+slConfigUISetVal(hDlg, hSrc, 'GenCodeOnly', 'on')
+slConfigUISetEnabled(hDlg, hSrc, 'GenCodeOnly', false);
+
 slConfigUISetVal(hDlg, hSrc,     'GenerateMakefile','on')
 slConfigUISetEnabled(hDlg, hSrc, 'GenerateMakefile', false);
 
@@ -31,10 +35,10 @@ slConfigUISetEnabled(hDlg, hSrc, 'TemplateMakefile', true);
 %% Report tab **************************************************************
 function ReportTab(hDlg, hSrc)
 slConfigUISetVal(hDlg, hSrc,     'GenerateReport','off')
-slConfigUISetEnabled(hDlg, hSrc, 'GenerateReport', true);
+slConfigUISetEnabled(hDlg, hSrc, 'GenerateReport', false);
 
 slConfigUISetVal(hDlg, hSrc,     'LaunchReport','off')
-slConfigUISetEnabled(hDlg, hSrc, 'LaunchReport', true);
+slConfigUISetEnabled(hDlg, hSrc, 'LaunchReport', false);
 
 %% Interface tab ***********************************************************
 function InterfaceTab(hDlg, hSrc)
@@ -43,8 +47,8 @@ slConfigUISetEnabled(hDlg, hSrc, 'SupportContinuousTime', true);
 
 % Templates tab ***********************************************************
 function TemplatesTab(hDlg, hSrc)
-slConfigUISetVal(hDlg, hSrc,     'ERTCustomFileTemplate','freertos_arduino_main.tlc')
-slConfigUISetEnabled(hDlg, hSrc, 'ERTCustomFileTemplate', true);
+slConfigUISetVal(hDlg, hSrc,     'ERTCustomFileTemplate','arduino_freertos_main.tlc')
+slConfigUISetEnabled(hDlg, hSrc, 'ERTCustomFileTemplate', false);
 
 slConfigUISetVal(hDlg, hSrc,     'GenerateSampleERTMain','on')
 slConfigUISetEnabled(hDlg, hSrc, 'GenerateSampleERTMain', false);

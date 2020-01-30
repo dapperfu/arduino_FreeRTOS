@@ -51,7 +51,6 @@ void setup() {
     for(;;) {
         /* Add code here */
     }
-    return 0;
 }
 
 

@@ -1,0 +1,5 @@
+SYS_TARGET_FILE = arduino_freertos.tlc
+
+.PHONY: debug
+debug:
+    !set
